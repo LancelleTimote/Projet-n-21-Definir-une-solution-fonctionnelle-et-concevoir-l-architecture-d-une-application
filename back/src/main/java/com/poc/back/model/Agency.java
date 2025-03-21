@@ -25,9 +25,6 @@ public class Agency {
     @Column(nullable = false, length = 255)
     private String address;
 
-    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CustomerSupport> customerSupports;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

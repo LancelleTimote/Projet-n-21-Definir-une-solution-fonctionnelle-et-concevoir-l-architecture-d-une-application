@@ -19,7 +19,7 @@ public class Customer {
     @Column(name = "customer_id")
     private Long customerId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User customer;
 

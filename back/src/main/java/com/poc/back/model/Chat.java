@@ -24,9 +24,9 @@ public class Chat {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "message_sender_id", nullable = false)
-    private User messageSender;
+    private User user;
 
-    @Column(nullable = false)
+    @Column(name="message", nullable = false)
     private String message;
 
     @CreationTimestamp

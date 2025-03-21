@@ -20,11 +20,14 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "message_id", nullable = false)
-    private Message message;
+    private Message messageId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(name="message", nullable = false)
+    private String message;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
