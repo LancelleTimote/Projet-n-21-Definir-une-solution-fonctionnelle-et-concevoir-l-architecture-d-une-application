@@ -44,12 +44,18 @@ server.servlet.encoding.enabled=true
 server.servlet.encoding.force=true
 
 # ================================
-# 6. Tests Configuration
+# 6. JWT Configuration
+# ================================
+jwt.secret=aQrOP1chtinEQMdYxGH7XSw0DAtUOe3fXHouyY9IGS4=
+jwt.expiration.ms=86400000
+
+# ================================
+# 7. Tests Configuration
 # ================================
 spring.test.transaction.default-timeout=30
 spring.test.rollback=true
 
 # ================================
-# 7. Débogage avancé pour les tests
+# 8. Débogage avancé pour les tests
 # ================================
 spring.jpa.defer-datasource-initialization=false
