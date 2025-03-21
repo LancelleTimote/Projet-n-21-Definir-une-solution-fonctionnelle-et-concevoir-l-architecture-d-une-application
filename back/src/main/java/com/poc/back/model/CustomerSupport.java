@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CUSTOMER_SERVICE")
-public class CustomerService {
+@Table(name = "CUSTOMER_SUPPORT")
+public class CustomerSupport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_service_id")
-    private Long id;
+    @Column(name = "customer_support_id")
+    private Long customerSupportId;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    private User customerSupport;
 
     @ManyToOne
     @JoinColumn(name = "agency_id", nullable = false)

@@ -2,7 +2,7 @@ package com.poc.back.repository;
 
 import com.poc.back.model.Conversation;
 import com.poc.back.model.Customer;
-import com.poc.back.model.CustomerService;
+import com.poc.back.model.CustomerSupport;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
     List<Conversation> findByCustomer(Customer customer);
 
-    List<Conversation> findByCustomerServiceModel(CustomerService customerService);
+    List<Conversation> findByCustomerSupport(CustomerSupport customerSupport);
 
-    Conversation findByCustomerAndCustomerServiceModel(Customer customer, CustomerService customerService);
+    Conversation findByCustomerAndCustomerSupport(Customer customer, CustomerSupport customerSupport);
 }

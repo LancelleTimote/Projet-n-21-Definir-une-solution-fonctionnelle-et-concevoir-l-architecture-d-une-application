@@ -13,7 +13,7 @@ CREATE TABLE `USERS`(
     `email` VARCHAR(40) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
     `birthdate` DATE NOT NULL,
-    `user_type` ENUM('customer', 'customer_service') NOT NULL,
+    `user_type` ENUM('CUSTOMER', 'CUSTOMER_SUPPORT') NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -25,8 +25,8 @@ CREATE TABLE `CUSTOMERS`(
     FOREIGN KEY (`user_id`) REFERENCES `USERS`(`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE `CUSTOMER_SERVICE`(
-    `customer_service_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE `CUSTOMER_SUPPORT`(
+    `customer_support_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `user_id` INT NOT NULL UNIQUE,
     `agency_id` INT NOT NULL,
     FOREIGN KEY (`user_id`) REFERENCES `USERS`(`id`) ON DELETE CASCADE,
@@ -69,11 +69,11 @@ CREATE TABLE `RENTALS`(
 CREATE TABLE `CONVERSATIONS`(
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `customer_id` INT NOT NULL,
-    `customer_service_id` INT NOT NULL,
+    `customer_support_id` INT NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`customer_id`) REFERENCES `CUSTOMERS`(`customer_id`),
-    FOREIGN KEY (`customer_service_id`) REFERENCES `CUSTOMER_SERVICE`(`customer_service_id`)
+    FOREIGN KEY (`customer_support_id`) REFERENCES `CUSTOMER_SUPPORT`(`customer_support_id`)
 );
 
 CREATE TABLE `MESSAGES`(

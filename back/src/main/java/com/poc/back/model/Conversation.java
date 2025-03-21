@@ -23,8 +23,8 @@ public class Conversation {
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_service_id", nullable = false)
-    private CustomerService customerService;
+    @JoinColumn(name = "customer_support_id", nullable = false)
+    private CustomerSupport customerSupport;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
