@@ -1,7 +1,7 @@
 import { User } from './User';
 
 export interface ChatRequest {
-  conversationId: number;
-  user: User;
+  conversationid: number | undefined;
+  user: User | undefined;
   message: string;
 }

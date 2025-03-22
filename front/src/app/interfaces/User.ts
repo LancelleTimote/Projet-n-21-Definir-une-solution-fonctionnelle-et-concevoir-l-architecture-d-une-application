@@ -1,4 +1,5 @@
-export type UserType = 'CUSTOMER' | 'CUSTOMER_SUPPORT';
+import { Customer } from './Customer';
+import { CustomerSupport } from './CustomerSupport';
 
 export interface User {
   id: number;
@@ -7,7 +8,9 @@ export interface User {
   email: string;
   password: string;
   birthdate: Date;
-  type: UserType;
-  createdAt: Date;
-  updatedAt: Date;
+  userType: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  customer?: Customer | undefined;
+  customer_support?: CustomerSupport;
 }

@@ -7,4 +7,5 @@ export interface Conversation {
   customerSupport: CustomerSupport;
   createdAt: Date;
   updatedAt: Date;
+  interlocutor?: string;
 }
