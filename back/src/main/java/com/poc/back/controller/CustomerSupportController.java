@@ -17,8 +17,8 @@ public class CustomerSupportController {
     private final CustomerSupportService customerSupportService;
 
     @GetMapping()
-    public ResponseEntity<?> getAllCustomerServiceUsers(){
-        List<CustomerSupport> customerServiceModelList = this.customerSupportService.findAllCustomerSupport();
-        return ResponseEntity.ok().body(customerServiceModelList);
+    public ResponseEntity<?> getAllCustomerSupportUsers(){
+        List<CustomerSupport> customerSupportList = this.customerSupportService.findAllCustomerSupport();
+        return ResponseEntity.ok().body(customerSupportList);
     }
 }
