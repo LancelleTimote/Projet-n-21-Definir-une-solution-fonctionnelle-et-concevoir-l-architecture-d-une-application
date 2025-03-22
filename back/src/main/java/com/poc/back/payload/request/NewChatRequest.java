@@ -1,4 +1,4 @@
-package com.poc.back.dto;
+package com.poc.back.payload.request;
 
 import com.poc.back.model.User;
 import lombok.AllArgsConstructor;

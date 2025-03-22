@@ -3,6 +3,7 @@ import { Agency } from './Agency';
 
 export interface CustomerSupport {
   customerSupportId: number;
-  customerSupport: User;
-  agency: Agency;
+  agency?: Agency;
+  userId?: number;
+  customerSupport?: User;
 }

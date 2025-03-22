@@ -1,10 +1,10 @@
 package com.poc.back.controller;
 
-import com.poc.back.dto.UserDto;
 import com.poc.back.model.Customer;
 import com.poc.back.model.CustomerSupport;
 import com.poc.back.model.User;
-import com.poc.back.model.enums.UserType;
+import com.poc.back.payload.response.CustomerResponse;
+import com.poc.back.payload.response.CustomerSupportResponse;
 import com.poc.back.service.CustomerService;
 import com.poc.back.service.CustomerSupportService;
 import com.poc.back.service.UserService;
@@ -31,36 +31,30 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable("id") Long id) {
-        User user = userService.getUserById(id);
-
-        if (UserType.CUSTOMER.equals(user.getType())) {
-            Customer customer = customerService.findCustomerByUser(user);
-            if (customer == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(new UserDto(user.getId(), user.getEmail(), user.getPassword()));
-        } else if (UserType.CUSTOMER_SUPPORT.equals(user.getType())) {
-            CustomerSupport customerSupport = customerSupportService.findByCustomerSupport(user);
-            if (customerSupport == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(new UserDto(user.getId(), user.getEmail(), user.getPassword()));
+    public ResponseEntity<?> getUser(@PathVariable("id") Long id){
+        User user = this.userService.findUserById(id);
+        if(user.getUserType().equals("CUSTOMER")){
+            Customer customer = this.customerService.findCustomerByUser(user);
+            CustomerResponse customerResponse = new CustomerResponse(user,customer);
+            return ResponseEntity.ok().body(customerResponse);
+        } else if (user.getUserType().equals("CUSTOMER_SUPPORT")) {
+            CustomerSupport customerSupport = this.customerSupportService.findByCustomerSupport(user);
+            CustomerSupportResponse customerServiceResponse = new CustomerSupportResponse(user,customerSupport);
+            return ResponseEntity.ok().body(customerServiceResponse);
         }
-
-        return ResponseEntity.badRequest().body("Type d'utilisateur inconnu.");
+        return ResponseEntity.ok().body("ok");
     }
 
     @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.findAllUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<?> getAllUsers(){
+        List<User> users = this.userService.findAllUsers();
+        return ResponseEntity.ok().body(users);
     }
 
-    @MessageMapping("/get_all_customer_support")
-    public void getAllCustomerSupportUsers(@Payload Long customerId) {
-        List<CustomerSupport> list = customerSupportService.findAllCustomerSupport();
-        log.info("Envoi de la liste des agents Customer Support à l'utilisateur {}", customerId);
-        template.convertAndSendToUser(customerId.toString(), "/queue/customer_support_list", list);
+    @MessageMapping("/get_all_customer_support_users")
+    public List<CustomerSupport> getAllCustomerSupportUsersTest(@Payload Long customerId){
+        List<CustomerSupport> list = this.customerSupportService.findAllCustomerSupport();
+        this.template.convertAndSendToUser(customerId.toString(),"/get_all_customer_support_users", list);
+        return list;
     }
 }

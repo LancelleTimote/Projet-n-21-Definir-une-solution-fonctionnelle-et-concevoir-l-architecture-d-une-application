@@ -1,6 +1,6 @@
 package com.poc.back.controller;
 
-import com.poc.back.payload.NewConversationRequest;
+import com.poc.back.payload.request.NewConversationRequest;
 import com.poc.back.model.Conversation;
 import com.poc.back.model.Customer;
 import com.poc.back.model.CustomerSupport;
@@ -18,7 +18,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,38 +36,26 @@ public class ConversationController {
 
 
     @GetMapping("/all/{id}")
-    public ResponseEntity<?> getAllConversationsHttp(@PathVariable("id") Long id) {
-        User user = userService.getUserById(id);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getAllConversationsHttp(@PathVariable("id") Long id){
+        User user = this.userService.findUserById(id);
+        if(user.getUserType().equals("CUSTOMER")){
+            Customer customer = this.customerService.findCustomerByUser(user);
+            List<Conversation> list = this.conversationService.findAllConversationsCustomer(customer);
+            return ResponseEntity.ok().body(list);
+        }else if(user.getUserType().equals("CUSTOMER_SUPPORT")){
+            CustomerSupport customerSupport = this.customerSupportService.findByCustomerSupport(user);
+            List<Conversation> list= this.conversationService.findAllConversationsCustomerSupport(customerSupport);
+            return ResponseEntity.ok().body(list);
         }
-
-        List<Conversation> conversations;
-        if ("customer".equals(user.getType())) {
-            Customer customer = customerService.findCustomerByUser(user);
-            conversations = conversationService.findAllConversationsCustomer(customer);
-        } else if ("customer_support".equals(user.getType())) {
-            CustomerSupport customerSupport = customerSupportService.findByCustomerSupport(user);
-            conversations = conversationService.findAllConversationsCustomerSupport(customerSupport);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-
-        return ResponseEntity.ok().body(conversations);
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createConversation(@RequestBody NewConversationRequest request) {
-        Customer customer = customerService.findCustomerById(request.getCustomerId());
-        CustomerSupport customerSupport = customerSupportService.findCustomerSupportById(request.getCustomerSupportId());
-
-        if (customer == null || customerSupport == null) {
-            return ResponseEntity.badRequest().body("Client ou support client introuvable.");
-        }
-
-        Conversation conversation = new Conversation(customer, customerSupport, LocalDateTime.now(), LocalDateTime.now());
-        conversationService.createConversation(conversation);
-
+    public ResponseEntity<?> createConversation(@RequestBody NewConversationRequest request){
+        Customer customer = this.customerService.findCustomerById(request.getCustomerId());
+        CustomerSupport customerSupport = this.customerSupportService.findCustomerSupportById(request.getCustomerSupportId());
+        Conversation conversation = new Conversation(customer,customerSupport, LocalDateTime.now(),LocalDateTime.now());
+        this.conversationService.createConversation(conversation);
         return ResponseEntity.ok().body(conversation);
     }
 
@@ -79,29 +66,13 @@ public class ConversationController {
     }
 
     @MessageMapping("/create_private_conversation")
-    public void createPrivateConversationSocket(@Payload NewConversationRequest request, Principal principal) {
-        log.info("Création d'une conversation privée entre {} et {}", request.getCustomerId(), request.getCustomerSupportId());
-
-        Customer customer = customerService.findCustomerById(request.getCustomerId());
-        CustomerSupport customerSupport = customerSupportService.findCustomerSupportById(request.getCustomerSupportId());
-
-        if (customer == null || customerSupport == null) {
-            log.error("Impossible de créer la conversation : Client ou support client introuvable.");
-            return;
-        }
-
-        if (!principal.getName().equals(customer.getCustomer().getEmail()) &&
-                !principal.getName().equals(customerSupport.getCustomerSupport().getEmail())) {
-            log.warn("Utilisateur non autorisé à créer cette conversation.");
-            return;
-        }
-
-        Conversation conversation = new Conversation(customer, customerSupport, LocalDateTime.now(), LocalDateTime.now());
-        conversationService.createConversation(conversation);
-
-        template.convertAndSendToUser(request.getCustomerId().toString(), "/new_private_conversation/customer", conversation);
-        template.convertAndSendToUser(request.getCustomerSupportId().toString(), "/new_private_conversation/customer_support", conversation);
-
-        log.info("Conversation privée créée avec succès.");
+    public Conversation createPrivateConversationSocket(@Payload NewConversationRequest request){
+        Customer customer = this.customerService.findCustomerById(request.getCustomerId());
+        CustomerSupport customerSupport = this.customerSupportService.findCustomerSupportById(request.getCustomerSupportId());
+        Conversation conversation = new Conversation(customer,customerSupport, LocalDateTime.now(),LocalDateTime.now());
+        this.conversationService.createConversation(conversation);
+        this.template.convertAndSendToUser(request.getCustomerSupportId().toString(),"/new_private_conversation/customer_service", conversation);
+        this.template.convertAndSendToUser(request.getCustomerId().toString(),"/new_private_conversation/customer", conversation);
+        return conversation;
     }
 }

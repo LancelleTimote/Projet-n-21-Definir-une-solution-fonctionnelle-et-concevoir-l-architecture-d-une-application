@@ -1,4 +1,4 @@
-package com.poc.back.payload;
+package com.poc.back.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

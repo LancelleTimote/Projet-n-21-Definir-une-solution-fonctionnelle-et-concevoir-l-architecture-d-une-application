@@ -1,6 +1,5 @@
 package com.poc.back.model;
 
-import com.poc.back.model.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,9 +34,9 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthdate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_type", nullable = false)
-    private UserType type;
+    @NonNull
+    @Column(name = "user_type")
+    private String userType;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
