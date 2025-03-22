@@ -33,4 +33,11 @@ public class Conversation {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public Conversation(Customer customer, CustomerSupport customerSupport, LocalDateTime createdAt, LocalDateTime updatedAt){
+        this.customer=customer;
+        this.customerSupport = customerSupport;
+        this.createdAt=createdAt;
+        this.updatedAt=updatedAt;
+    }
 }

@@ -36,4 +36,12 @@ public class Chat {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public Chat(Conversation conversation, User user, String message, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.conversation = conversation;
+        this.user = user;
+        this.message = message;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }
