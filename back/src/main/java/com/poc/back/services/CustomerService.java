@@ -1,9 +1,9 @@
-package com.poc.back.service;
+package com.poc.back.services;
 
-import com.poc.back.model.Customer;
-import com.poc.back.model.User;
-import com.poc.back.repository.CustomerRepository;
-import com.poc.back.repository.UserRepository;
+import com.poc.back.models.Customer;
+import com.poc.back.models.User;
+import com.poc.back.repositories.CustomerRepository;
+import com.poc.back.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class CustomerService {
     }
 
     public Customer findByCustomerId(Long id){
-        return this.customerRepository.findByCustomerId(id);
+        return this.customerRepository.findByCustomerid(id);
     }
 
     public List<Customer> findAllCustomers(){

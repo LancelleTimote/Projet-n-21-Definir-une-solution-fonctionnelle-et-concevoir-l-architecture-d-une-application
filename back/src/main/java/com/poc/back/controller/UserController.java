@@ -1,49 +1,55 @@
 package com.poc.back.controller;
 
-import com.poc.back.model.Customer;
-import com.poc.back.model.CustomerSupport;
-import com.poc.back.model.User;
+import com.poc.back.models.Customer;
+import com.poc.back.models.CustomerServiceModel;
+import com.poc.back.models.User;
 import com.poc.back.payload.response.CustomerResponse;
-import com.poc.back.payload.response.CustomerSupportResponse;
-import com.poc.back.service.CustomerService;
-import com.poc.back.service.CustomerSupportService;
-import com.poc.back.service.UserService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import com.poc.back.payload.response.CustomerServiceResponse;
+import com.poc.back.services.CustomerService;
+import com.poc.back.services.CustomerServiceService;
+import com.poc.back.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Controller
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/users")
-@Slf4j
+@RequestMapping("/api/user")
 public class UserController {
+    @Autowired
+    private UserService userService;
 
-    private final UserService userService;
-    private final CustomerService customerService;
-    private final CustomerSupportService customerSupportService;
-    private final SimpMessagingTemplate template;
+    @Autowired
+    private CustomerService customerService;
 
+    @Autowired
+    private CustomerServiceService customerServiceService;
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable("id") Long id){
         User user = this.userService.findUserById(id);
-        if(user.getUserType().equals("CUSTOMER")){
+        if(user.getUsertype().equals("customer")){
             Customer customer = this.customerService.findCustomerByUser(user);
             CustomerResponse customerResponse = new CustomerResponse(user,customer);
             return ResponseEntity.ok().body(customerResponse);
-        } else if (user.getUserType().equals("CUSTOMER_SUPPORT")) {
-            CustomerSupport customerSupport = this.customerSupportService.findByCustomerSupport(user);
-            CustomerSupportResponse customerServiceResponse = new CustomerSupportResponse(user,customerSupport);
+        } else if (user.getUsertype().equals("customer_service")) {
+            CustomerServiceModel customerServiceModel1 = this.customerServiceService.findByCustomerService(user);
+            CustomerServiceResponse customerServiceResponse = new CustomerServiceResponse(user,customerServiceModel1);
             return ResponseEntity.ok().body(customerServiceResponse);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User type not recognized");
+        return ResponseEntity.ok().body("ok");
     }
 
     @GetMapping()
@@ -52,10 +58,10 @@ public class UserController {
         return ResponseEntity.ok().body(users);
     }
 
-    @MessageMapping("/get_all_customer_support_users")
-    public List<CustomerSupport> getAllCustomerSupportUsersTest(@Payload Long customerId){
-        List<CustomerSupport> list = this.customerSupportService.findAllCustomerSupport();
-        this.template.convertAndSendToUser(customerId.toString(),"/get_all_customer_support_users", list);
+    @MessageMapping("/get_all_customer_service_users")
+    public List<CustomerServiceModel> getAllCustomerServiceUsersTest(@Payload Long customerId){
+        List<CustomerServiceModel> list = this.customerServiceService.findAllCustomerService();
+        this.template.convertAndSendToUser(customerId.toString(),"/get_all_customer_service_users", list);
         return list;
     }
 }

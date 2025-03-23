@@ -1,8 +1,8 @@
-package com.poc.back.service;
+package com.poc.back.services;
 
-import com.poc.back.model.Chat;
-import com.poc.back.model.Conversation;
-import com.poc.back.repository.ChatRepository;
+import com.poc.back.models.Chat;
+import com.poc.back.models.Conversation;
+import com.poc.back.repositories.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
-package com.poc.back.service;
+package com.poc.back.services;
 
-import com.poc.back.model.Conversation;
-import com.poc.back.model.Customer;
-import com.poc.back.model.CustomerSupport;
-import com.poc.back.repository.ConversationRepository;
+import com.poc.back.models.Conversation;
+import com.poc.back.models.Customer;
+import com.poc.back.models.CustomerServiceModel;
+import com.poc.back.repositories.ConversationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class ConversationService {
         return this.conversationRepository.findByCustomer(customer);
     }
 
-    public List<Conversation> findAllConversationsCustomerSupport(CustomerSupport customerSupport){
-        return this.conversationRepository.findByCustomerSupport(customerSupport);
+    public List<Conversation> findAllConversationsCustomerService(CustomerServiceModel customerServiceModel){
+        return this.conversationRepository.findByCustomerServiceModel(customerServiceModel);
     }
 }

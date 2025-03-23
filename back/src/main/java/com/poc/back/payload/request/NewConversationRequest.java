@@ -13,5 +13,5 @@ public class NewConversationRequest {
     private Long customerId;
 
     @NonNull
-    private Long customerSupportId;
+    private Long customerServiceModelId;
 }

@@ -1,12 +1,12 @@
 package com.poc.back.controller;
 
+
+import com.poc.back.models.Chat;
+import com.poc.back.models.Conversation;
 import com.poc.back.payload.request.NewChatRequest;
-import com.poc.back.model.Chat;
-import com.poc.back.model.Conversation;
-import com.poc.back.service.ChatService;
-import com.poc.back.service.ConversationService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.poc.back.services.ChatService;
+import com.poc.back.services.ConversationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -14,20 +14,26 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @Controller
-@RequiredArgsConstructor
+@RestController
 @RequestMapping("/api/chat")
 public class ChatController {
+    @Autowired
+    private ChatService chatService;
 
-    private final ChatService chatService;
-    private final ConversationService conversationService;
-    private final SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private ConversationService conversationService;
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getChatMessages(@PathVariable Long id){
@@ -50,26 +56,26 @@ public class ChatController {
         Conversation conversation = this.conversationService.findConversationById(conversationId);
         Chat chat = new Chat(conversation,messageRequest.getUser(), messageRequest.getMessage(), LocalDateTime.now(), LocalDateTime.now());
         this.chatService.sendChatMessage(chat);
-        conversation.setUpdatedAt(LocalDateTime.now());
+        conversation.setUpdatedat(LocalDateTime.now());
         this.conversationService.updateConversation(conversationId, conversation);
         return chat;
     }
 
     @MessageMapping("/sendNewMessage")
     public Chat sendNewMessageSocket(@Payload NewChatRequest messageRequest){
-        Conversation conversation = this.conversationService.findConversationById(messageRequest.getConversationId());
+        Conversation conversation = this.conversationService.findConversationById(messageRequest.getConversationid());
         Chat chat = new Chat(conversation,messageRequest.getUser(), messageRequest.getMessage(), LocalDateTime.now(), LocalDateTime.now());
         this.chatService.sendChatMessage(chat);
-        conversation.setUpdatedAt(LocalDateTime.now());
-        this.conversationService.updateConversation(messageRequest.getConversationId(), conversation);
-        this.messagingTemplate.convertAndSendToUser(
-                conversation.getCustomer().getCustomerId().toString(),
-                "/conversation/customer/"+messageRequest.getConversationId().toString(),
+        conversation.setUpdatedat(LocalDateTime.now());
+        this.conversationService.updateConversation(messageRequest.getConversationid(), conversation);
+        this.template.convertAndSendToUser(
+                conversation.getCustomer().getCustomerid().toString(),
+                "/conversation/customer/"+messageRequest.getConversationid().toString(),
                 chat
         );
-        this.messagingTemplate.convertAndSendToUser(
-                conversation.getCustomerSupport().getCustomerSupportId().toString(),
-                "/conversation/customer_support/"+messageRequest.getConversationId().toString(),
+        this.template.convertAndSendToUser(
+                conversation.getCustomerServiceModel().getCustomerserviceid().toString(),
+                "/conversation/customer_service/"+messageRequest.getConversationid().toString(),
                 chat
         );
         return chat;
