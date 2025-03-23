@@ -13,13 +13,6 @@ export class CustomerSupportService {
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<CustomerSupport[]> {
-    return this.http
-      .get<CustomerSupport[]>(`${this.path}/customer_support`)
-      .pipe(
-        catchError((error) => {
-          console.error('Error fetching customer support list', error);
-          return throwError(error);
-        })
-      );
+    return this.http.get<CustomerSupport[]>(`${this.path}/customer_support`);
   }
 }

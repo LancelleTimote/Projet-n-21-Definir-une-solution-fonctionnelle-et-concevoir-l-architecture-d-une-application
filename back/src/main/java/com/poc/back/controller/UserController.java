@@ -10,6 +10,7 @@ import com.poc.back.service.CustomerSupportService;
 import com.poc.back.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -42,7 +43,7 @@ public class UserController {
             CustomerSupportResponse customerServiceResponse = new CustomerSupportResponse(user,customerSupport);
             return ResponseEntity.ok().body(customerServiceResponse);
         }
-        return ResponseEntity.ok().body("ok");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User type not recognized");
     }
 
     @GetMapping()
