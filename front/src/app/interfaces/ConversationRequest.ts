@@ -1,4 +1,4 @@
 export interface ConversationRequest {
   customerId: number | undefined;
-  customerSupportId: number;
+  customerServiceModelId: number;
 }

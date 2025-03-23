@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../../interfaces/User';
-import { UserResponse } from '../../interfaces/UserResponse';
+import { User } from 'src/app/interfaces/User';
+import { UserResponse } from 'src/app/interfaces/UserResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +13,10 @@ export class UsersService {
   constructor(private http: HttpClient) {}
 
   public get(id: number): Observable<UserResponse> {
-    return this.http.get<UserResponse>(`${this.path}/users/${id}`);
+    return this.http.get<UserResponse>(`${this.path}/user/${id}`);
   }
 
   public getAll(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.path}/users`);
+    return this.http.get<User[]>(`${this.path}/user`);
   }
 }

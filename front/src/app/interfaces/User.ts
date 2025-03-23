@@ -1,5 +1,5 @@
 import { Customer } from './Customer';
-import { CustomerSupport } from './CustomerSupport';
+import { CustomerService } from './CustomerService';
 
 export interface User {
   id: number;
@@ -7,10 +7,10 @@ export interface User {
   lastname: string;
   email: string;
   password: string;
-  birthdate: Date;
-  userType: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  birthdate: Date | undefined;
+  usertype: string;
+  createdat?: Date;
+  updatedat?: Date;
   customer?: Customer | undefined;
-  customer_support?: CustomerSupport;
+  customer_service?: CustomerService;
 }

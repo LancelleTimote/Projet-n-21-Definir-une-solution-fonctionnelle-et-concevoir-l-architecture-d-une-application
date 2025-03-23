@@ -1,11 +1,11 @@
 import { Customer } from './Customer';
-import { CustomerSupport } from './CustomerSupport';
+import { CustomerService } from './CustomerService';
 
 export interface Conversation {
   id: number;
   customer: Customer;
-  customerSupport: CustomerSupport;
-  createdAt: Date;
-  updatedAt: Date;
+  customerServiceModel: CustomerService;
+  createdat: Date;
+  updatedat: Date;
   interlocutor?: string;
 }

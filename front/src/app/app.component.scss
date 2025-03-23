@@ -1,0 +1,64 @@
+main{
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+}
+
+.conversations{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    column-gap: 3rem;
+}
+
+.conversation{
+    width: 100%;
+    border: 2px solid black;
+    height: 500px;
+}
+
+.conversations_title_list{
+    width: 40%;
+}
+
+.buttons{
+    margin-bottom: 1rem;
+}
+
+.conversation_list, .customer_service_users{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.article_conversation{
+    cursor: pointer;
+    border: 1px solid;
+    padding: 0 1rem;
+}
+
+.article_conversation:hover{
+    background-color: #d5f0f3;
+}
+
+.active{
+    background-color: #d5f0f3;
+}
+
+.chat{
+    padding: 6px 1rem;
+}
+
+.messages_list{
+    height: 405px;
+    overflow: auto;
+}
+
+.input_send{
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+}
+

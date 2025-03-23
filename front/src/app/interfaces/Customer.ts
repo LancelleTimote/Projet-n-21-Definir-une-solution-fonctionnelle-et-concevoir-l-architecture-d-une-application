@@ -1,8 +1,8 @@
 import { User } from './User';
 
 export interface Customer {
-  customerId: number;
+  customerid: number;
   address: string;
-  userId?: number;
+  userid?: number;
   customer?: User;
 }

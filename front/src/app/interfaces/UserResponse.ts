@@ -1,9 +1,9 @@
 import { Customer } from './Customer';
-import { CustomerSupport } from './CustomerSupport';
+import { CustomerService } from './CustomerService';
 import { User } from './User';
 
 export interface UserResponse {
   user: User;
   customer: Customer;
-  customerSupport: CustomerSupport;
+  customerServiceModel: CustomerService;
 }
