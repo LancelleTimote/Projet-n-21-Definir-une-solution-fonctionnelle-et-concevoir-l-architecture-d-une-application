@@ -88,7 +88,7 @@ Afin de vous assurer de la validité de votre proposition, vous décidez égalem
 ## :exclamation: 5. Prérequis <a name = "prerequis"></a>
 
 - Pour le back un Java en version 17 ou plus ;
-- Vous aurez aussi besoin de maven en version 3.9.8 ;
+- Vous aurez aussi besoin de maven en version 3.9.8.
 
 ## :wrench: 6. Installation <a name = "installation"></a>
 
@@ -103,6 +103,7 @@ Afin de vous assurer de la validité de votre proposition, vous décidez égalem
 - Dans le terminal à partir du dossier front-end, exécuter npm start ;
 - L'application est disponible a l'adresse suivante : http://localhost:4200/
 - L'API s'exécute sur le port 3001 ;
+- La base de donnée est disponible dans le dossier back/src/main/resources.
 - La base de donnée H2 est disponible à cette adresse : http://localhost:3001/h2-console
 - Les identifiants pour la base de donnée H2 sont :
   Username : sa
