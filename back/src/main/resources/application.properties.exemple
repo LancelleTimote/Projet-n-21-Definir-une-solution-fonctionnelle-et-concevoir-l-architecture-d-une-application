@@ -38,7 +38,7 @@ logging.level.com.mdd=INFO
 # ================================
 # 5. Serveur Configuration
 # ================================
-server.port=8080
+server.port=3001
 server.servlet.encoding.charset=UTF-8
 server.servlet.encoding.enabled=true
 server.servlet.encoding.force=true
