@@ -4,30 +4,30 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Table(name = "CUSTOMER_SERVICE")
-public class CustomerServiceModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerserviceid;
+public class CustomerServiceModel extends BaseEntity {
 
     @OneToOne
     @NonNull
     @JoinColumn(name="agencyid")
     private Agency agency;
 
-
     @ManyToOne
     @NonNull
     @JoinColumn(name = "userid")
     private User customerservice;
 
-    public CustomerServiceModel(){}
+    public CustomerServiceModel(Agency agency, User customerservice, LocalDateTime createdAt) {
+        super(createdAt);
+        this.agency = agency;
+        this.customerservice = customerservice;
+    }
 
-    public CustomerServiceModel(Agency agency, User customerservice){
-        this.agency=agency;
-        this.customerservice=customerservice;
+    public CustomerServiceModel() {
+        super(LocalDateTime.now());
     }
 }

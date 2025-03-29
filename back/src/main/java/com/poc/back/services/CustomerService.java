@@ -22,7 +22,7 @@ public class CustomerService {
     }
 
     public Customer findByCustomerId(Long id){
-        return this.customerRepository.findByCustomerid(id);
+        return this.customerRepository.findByCustomer_Id(id);
     }
 
     public List<Customer> findAllCustomers(){

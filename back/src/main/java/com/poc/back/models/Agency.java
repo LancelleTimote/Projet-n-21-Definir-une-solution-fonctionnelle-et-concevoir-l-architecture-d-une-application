@@ -3,17 +3,13 @@ package com.poc.back.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Table(name="AGENCIES")
-public class Agency {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Agency extends BaseEntity {
 
     @NonNull
     @Column(name = "name")
@@ -23,21 +19,13 @@ public class Agency {
     @Column(name = "address")
     private String address;
 
-    @NonNull
-    @Column(name= "createdat")
-    private LocalDateTime createdat;
-
-    @NonNull
-    @UpdateTimestamp
-    @Column(name="updatedat")
-    private LocalDateTime updatedat;
-
-    public Agency(String name, String address, LocalDateTime createdat, LocalDateTime updatedat){
-        this.name=name;
-        this.address=address;
-        this.createdat=createdat;
-        this.updatedat=updatedat;
+    public Agency(String name, String address, LocalDateTime createdAt) {
+        super(createdAt);
+        this.name = name;
+        this.address = address;
     }
 
-    public Agency(){}
+    public Agency() {
+        super(LocalDateTime.now());
+    }
 }

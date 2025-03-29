@@ -30,6 +30,6 @@ public class CustomerServiceService {
     }
 
     public CustomerServiceModel findUserByCustomerServiceId(Long id){
-        return this.customerServiceRepository.findByCustomerserviceid(id);
+        return this.customerServiceRepository.findByCustomerservice_Id(id);
     }
 }

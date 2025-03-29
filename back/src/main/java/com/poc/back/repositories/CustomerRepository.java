@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
     Customer findByCustomer(User user);
 
-    Customer findByCustomerid(Long id);
+    Customer findByCustomer_Id(Long id);
 }

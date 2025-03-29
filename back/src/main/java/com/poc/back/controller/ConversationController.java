@@ -58,7 +58,7 @@ public class ConversationController {
     public ResponseEntity<?> createConversation(@RequestBody NewConversationRequest request){
         Customer customer = this.customerService.findCustomerById(request.getCustomerId());
         CustomerServiceModel customerServiceModel = this.customerServiceService.findCustomerServiceById(request.getCustomerServiceModelId());
-        Conversation conversation = new Conversation(customer,customerServiceModel, LocalDateTime.now(),LocalDateTime.now());
+        Conversation conversation = new Conversation(customer, customerServiceModel, LocalDateTime.now());
         this.conversationService.createConversation(conversation);
         return ResponseEntity.ok().body(conversation);
     }
@@ -73,7 +73,7 @@ public class ConversationController {
     public Conversation createPrivateConversationSocket(@Payload NewConversationRequest request){
         Customer customer = this.customerService.findCustomerById(request.getCustomerId());
         CustomerServiceModel customerServiceModel = this.customerServiceService.findCustomerServiceById(request.getCustomerServiceModelId());
-        Conversation conversation = new Conversation(customer,customerServiceModel, LocalDateTime.now(),LocalDateTime.now());
+        Conversation conversation = new Conversation(customer, customerServiceModel, LocalDateTime.now());
         this.conversationService.createConversation(conversation);
         this.template.convertAndSendToUser(request.getCustomerServiceModelId().toString(),"/new_private_conversation/customer_service", conversation);
         this.template.convertAndSendToUser(request.getCustomerId().toString(),"/new_private_conversation/customer", conversation);

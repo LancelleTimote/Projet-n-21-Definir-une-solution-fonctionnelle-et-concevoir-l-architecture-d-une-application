@@ -52,32 +52,31 @@ public class ChatController {
 
     @MessageMapping("/sendMessage/{conversationId}")
     @SendTo("/topic/message_sent/{conversationId}")
-    public Chat sendChatMessageSocket(@Payload Chat messageRequest,@DestinationVariable Long conversationId){
-        Conversation conversation = this.conversationService.findConversationById(conversationId);
-        Chat chat = new Chat(conversation,messageRequest.getUser(), messageRequest.getMessage(), LocalDateTime.now(), LocalDateTime.now());
-        this.chatService.sendChatMessage(chat);
-        conversation.setUpdatedat(LocalDateTime.now());
-        this.conversationService.updateConversation(conversationId, conversation);
+    public Chat sendChatMessageSocket(@Payload Chat messageRequest, @DestinationVariable Long conversationId) {
+        Conversation conversation = conversationService.findConversationById(conversationId);
+        Chat chat = new Chat(conversation, messageRequest.getUser(), messageRequest.getMessage(), LocalDateTime.now());
+        chatService.sendChatMessage(chat);
         return chat;
     }
 
     @MessageMapping("/sendNewMessage")
-    public Chat sendNewMessageSocket(@Payload NewChatRequest messageRequest){
-        Conversation conversation = this.conversationService.findConversationById(messageRequest.getConversationid());
-        Chat chat = new Chat(conversation,messageRequest.getUser(), messageRequest.getMessage(), LocalDateTime.now(), LocalDateTime.now());
-        this.chatService.sendChatMessage(chat);
-        conversation.setUpdatedat(LocalDateTime.now());
-        this.conversationService.updateConversation(messageRequest.getConversationid(), conversation);
-        this.template.convertAndSendToUser(
-                conversation.getCustomer().getCustomerid().toString(),
-                "/conversation/customer/"+messageRequest.getConversationid().toString(),
+    public Chat sendNewMessageSocket(@Payload NewChatRequest messageRequest) {
+        Conversation conversation = conversationService.findConversationById(messageRequest.getConversationid());
+        Chat chat = new Chat(conversation, messageRequest.getUser(), messageRequest.getMessage(), LocalDateTime.now());
+        chatService.sendChatMessage(chat);
+
+        template.convertAndSendToUser(
+                conversation.getCustomer().getId().toString(),
+                "/conversation/customer/" + messageRequest.getConversationid(),
                 chat
         );
-        this.template.convertAndSendToUser(
-                conversation.getCustomerServiceModel().getCustomerserviceid().toString(),
-                "/conversation/customer_service/"+messageRequest.getConversationid().toString(),
+
+        template.convertAndSendToUser(
+                conversation.getCustomerServiceModel().getId().toString(),
+                "/conversation/customer_service/" + messageRequest.getConversationid(),
                 chat
         );
+
         return chat;
     }
 }
